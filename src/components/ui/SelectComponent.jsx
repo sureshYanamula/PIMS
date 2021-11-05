@@ -61,6 +61,7 @@ const SelectComponent = ({
     if (toReset) {
       setValue("");
       reSettingIsReset(!toReset);
+      setEarror("");
     }
   }, [toReset, reSettingIsReset]);
 
@@ -76,7 +77,7 @@ const SelectComponent = ({
   const handleChange = (event) => {
     setValue(event.target.value);
     selectValue(event.target.value);
-    setEarror("");
+    // setEarror("");
   };
   return (
     <div>
@@ -91,8 +92,6 @@ const SelectComponent = ({
           placeholder="select"
           input={<BootstrapInput />}
         >
-          <option aria-label="None" value="" />
-
           <option value="Warehouse1">Warehouse1</option>
           <option value="Warehouse2">Warehouse2</option>
           <option value="Warehouse3">Warehouse3</option>

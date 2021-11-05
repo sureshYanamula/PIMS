@@ -57,6 +57,9 @@ const Input = ({
   toReset,
   reSettingIsReset,
   inputEarror,
+  inputLength,
+  earrorResetOnChannge,
+  isEarrorResetOnChange,
 }) => {
   const classes = useStyles();
 
@@ -64,15 +67,22 @@ const Input = ({
   const [earror, setEarror] = React.useState("");
 
   useEffect(() => {
+    console.log(
+      toReset,
+      isEarrorResetOnChange,
+      "toReset,isEarrorResetOnChange"
+    );
     if (toReset) {
       setValue("");
       reSettingIsReset(!toReset);
+      setEarror("");
     }
-  }, [toReset, reSettingIsReset]);
+  }, [toReset, reSettingIsReset, isEarrorResetOnChange]);
 
   useEffect(() => {
-    if (inputEarror) {
+    if (inputEarror > 0) {
       if (value.length < 1) {
+        console.log("input");
         setEarror(`Please enter the ${inputLabel}`);
       }
       // value.length < 1 ? setEarror(`Please enter the ${inputLabel}`) : null;
@@ -83,6 +93,7 @@ const Input = ({
     setValue(e.target.value);
     setEarror("");
     inputValue(e.target.value);
+    earrorResetOnChannge();
   };
 
   return (
@@ -96,7 +107,9 @@ const Input = ({
           id="bootstrap-input"
           value={value}
           onChange={handleChange}
+          inputProps={{ maxLength: inputLength }}
         />
+        {console.log(inputLength)}
         {earror && <p style={{ color: "red" }}>{earror}</p>}
       </FormControl>
     </form>

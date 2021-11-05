@@ -10,6 +10,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import IconButton from "@material-ui/core/IconButton";
+import ModalComponent from "./ui/ModalComponent";
 
 const useStyles = makeStyles((theme) => ({
   marginLeft: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    padding: "0px 40px",
+    width: "300px",
     boxShadow: theme.shadows[5],
   },
   centeringText: {
@@ -55,16 +56,25 @@ const MasterSetup = () => {
   const [descriptionValue, setDescriptionValue] = React.useState("");
   const [warehouseValue, setWarehouseValue] = React.useState("");
   const [addingDataToTable, setAddingDataToTable] = React.useState(false);
-  const [isInputError, setIsInputEarror] = React.useState(false);
+  const [isInputError, setIsInputEarror] = React.useState(0);
+  const [successModal, setSuccessModal] = React.useState(null);
+  const [modalDialogSuccess, setModalDialogSuccess] = React.useState(0);
+  const [modalDialogExists, setModalDialogExists] = React.useState(0);
+  const [isEarrorResetOnChange, setIsEarrorResetOnChange] = React.useState(0);
 
   const handleAddProgram = () => {
-    console.log(programValue, descriptionValue, warehouseValue);
+    console.log(
+      programValue.length,
+      descriptionValue.length,
+      warehouseValue.length,
+      "programValue, descriptionValue, warehouseValue"
+    );
     if (
       (programValue.length < 1) |
       (descriptionValue.length < 1) |
       (warehouseValue.length < 1)
     ) {
-      setIsInputEarror(true);
+      setIsInputEarror(isInputError + 1);
     }
     setAddingDataToTable(!addingDataToTable);
 
@@ -102,8 +112,21 @@ const MasterSetup = () => {
     setOpen(false);
   };
 
-  const openingMOdal = () => {
-    setOpen(true);
+  const openingMOdal = (data) => {
+    if (data == "Success") {
+      console.log(data, "data");
+      setSuccessModal(true);
+      setModalDialogSuccess(modalDialogSuccess + 1);
+    } else if (data == "Failure") {
+      console.log(data, "data");
+      setModalDialogExists(modalDialogExists + 1);
+      setSuccessModal(true);
+    }
+  };
+
+  const earrorResetOnChannge = () => {
+    setIsEarrorResetOnChange(isEarrorResetOnChange + 1);
+    // setIsReset(true);
   };
 
   return (
@@ -122,6 +145,9 @@ const MasterSetup = () => {
             inputPlaceHolder="Enter your program ID"
             inputValue={handleProgramValue}
             toReset={isReset}
+            earrorResetOnChannge={earrorResetOnChannge}
+            isEarrorResetOnChange={isEarrorResetOnChange}
+            inputLength={6}
             inputEarror={isInputError}
             reSettingIsReset={() => setIsReset(false)}
           />
@@ -130,11 +156,14 @@ const MasterSetup = () => {
             inputPlaceHolder="Enter your Description"
             inputValue={handleDescriptionValue}
             toReset={isReset}
+            earrorResetOnChannge={earrorResetOnChannge}
+            isEarrorResetOnChange={isEarrorResetOnChange}
+            inputLength={50}
             inputEarror={isInputError}
             reSettingIsReset={() => setIsReset(false)}
           />
           <SelectComponent
-            selectLabel="Warehouse"
+            selectLabel="Select your warehouse"
             selectValue={handleWarehouseValue}
             inputEarror={isInputError}
             toReset={isReset}
@@ -172,51 +201,14 @@ const MasterSetup = () => {
           />
         </Grid>
       </Paper>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <Grid container direction="column">
-              <Grid item container direction="row" justifyContent="flex-end">
-                <IconButton
-                  aria-label="delete"
-                  disableRipple
-                  onClick={handleOnClose}
-                >
-                  <CloseOutlinedIcon fontSize="small" />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <p
-                  id="transition-modal-title"
-                  className={classes.centeringText}
-                >
-                  Program already exists
-                </p>
-              </Grid>
-              <Grid item container direction="row" justifyContent="center">
-                <ButtonComponent
-                  id="transition-modal-title"
-                  buttonType="contained"
-                  buttonLabel="Okay"
-                  minWidth={false}
-                  handleOnClick={handleOnClose}
-                />
-              </Grid>
-            </Grid>
-          </div>
-        </Fade>
-      </Modal>
+      <ModalComponent
+        modalDialog={modalDialogSuccess}
+        modalText="Program added Successfully"
+      />
+      <ModalComponent
+        modalDialog={modalDialogExists}
+        modalText="Program Id Exists"
+      />
     </Grid>
   );
 };

@@ -15,6 +15,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import IconButton from "@material-ui/core/IconButton";
+import ModalComponent from "./ModalComponent";
+import DeleteModal from "./DeleteModal";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -60,109 +62,127 @@ const initialRows = [
     "Entered Program1",
     "Entered Description1",
     "Entered Wherehouse1",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program2",
     "Entered Description2",
     "Entered Wherehouse2",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program3",
     "Entered Description18",
     "Entered Wherehouse3",
-    "Delete"
+    "Delete",
+    true
   ),
   createData(
     "Entered Program4",
     "Entered Description3",
     "Entered Wherehouse4",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program5",
     "Entered Description4",
     "Entered Wherehouse5",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program6",
     "Entered Description5",
     "Entered Wherehouse6",
-    "Delete"
+    "Delete",
+    true
   ),
   createData(
     "Entered Program7",
     "Entered Description6",
     "Entered Wherehouse7",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program8",
     "Entered Description7",
     "Entered Wherehouse8",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program9",
     "Entered Description8",
     "Entered Wherehouse9",
-    "Delete"
+    "Delete",
+    true
   ),
   createData(
     "Entered Program10",
     "Entered Description9",
     "Entered Wherehouse10",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program11",
     "Entered Description10",
     "Entered Wherehouse11",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program12",
     "Entered Description11",
     "Entered Wherehouse12",
-    "Delete"
+    "Delete",
+    true
   ),
   createData(
     "Entered Program13",
     "Entered Description12",
     "Entered Wherehouse13",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program14",
     "Entered Description13",
     "Entered Wherehouse14",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program15",
     "Entered Description14",
     "Entered Wherehouse15",
-    "Delete"
+    "Delete",
+    true
   ),
   createData(
     "Entered Program16",
     "Entered Description15",
     "Entered Wherehouse16",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program17",
     "Entered Description16",
     "Entered Wherehouse17",
-    "Delete"
+    "Delete",
+    false
   ),
   createData(
     "Entered Program18",
     "Entered Description17",
     "Entered Wherehouse18",
-    "Delete"
+    "Delete",
+    true
   ),
 ];
 
@@ -174,6 +194,9 @@ export default function TableComponent({
   const classes = useStyles();
   const [rows, setRows] = React.useState(initialRows);
   const [open, setOpen] = React.useState(false);
+  const [modalNotAllowed, setModalNotAllowed] = React.useState(0);
+  const [modalAllowed, setModalAllowed] = React.useState(0);
+  const [singleRow, setSingleRow] = React.useState({});
 
   useEffect(() => {
     var rowValue = {
@@ -193,11 +216,11 @@ export default function TableComponent({
       });
       if (duplicateObj?.fat == tableObj[2]) {
         // setOpen(true);
-        openingMOdal();
+        openingMOdal("Failure");
         console.log("2");
       } else {
         console.log("3");
-
+        openingMOdal("Success");
         setRows([rowValue, ...rows]);
       }
     }
@@ -210,8 +233,26 @@ export default function TableComponent({
     setOpen(false);
   };
 
+  const handleDelete = (data, index) => {
+    setSingleRow(data);
+
+    if (data.protein === true) {
+      setModalAllowed(modalAllowed + 1);
+    } else {
+      setModalNotAllowed(modalNotAllowed + 1);
+    }
+  };
+  const handleDeleteRow = () => {
+    if (singleRow.protein === true) {
+      let newRows = rows.filter((item, index) => {
+        return item.name !== singleRow.name;
+      });
+      setRows(newRows);
+    }
+  };
+
   return (
-    <TableContainer>
+    <TableContainer style={{ height: "40vh" }}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
@@ -242,7 +283,7 @@ export default function TableComponent({
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <TableRow key={row.name} calssName={classes.tableRow}>
               <TableCell
                 component="th"
@@ -258,7 +299,11 @@ export default function TableComponent({
                 {row.fat}
               </TableCell>
               <TableCell align="left" className={classes.rowColor}>
-                <Button color="primary" className={classes.button}>
+                <Button
+                  color="primary"
+                  onClick={() => handleDelete(row, index)}
+                  className={classes.button}
+                >
                   {row.carbs}
                 </Button>
               </TableCell>
@@ -266,51 +311,16 @@ export default function TableComponent({
           ))}
         </TableBody>
       </Table>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <Grid container direction="column">
-              <Grid item container direction="row" justifyContent="flex-end">
-                <IconButton
-                  aria-label="delete"
-                  disableRipple
-                  onClick={handleOnClose}
-                >
-                  <CloseOutlinedIcon fontSize="small" />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <p
-                  id="transition-modal-title"
-                  className={classes.centeringText}
-                >
-                  Program already exists
-                </p>
-              </Grid>
-              <Grid item container direction="row" justifyContent="center">
-                <ButtonComponent
-                  id="transition-modal-title"
-                  buttonType="contained"
-                  buttonLabel="Okay"
-                  minWidth={false}
-                  handleOnClick={handleOnClose}
-                />
-              </Grid>
-            </Grid>
-          </div>
-        </Fade>
-      </Modal>
+      <ModalComponent
+        modalDialog={modalNotAllowed}
+        modalText="You are not allowed to delete"
+      />
+      <ModalComponent
+        modalDialog={modalAllowed}
+        modalText="Are you sure to Delete"
+        deleteButton={true}
+        handleDeleteTableData={handleDeleteRow}
+      />
     </TableContainer>
   );
 }
