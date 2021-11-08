@@ -77,7 +77,11 @@ const Input = ({
       reSettingIsReset(!toReset);
       setEarror("");
     }
-  }, [toReset, reSettingIsReset, isEarrorResetOnChange]);
+  }, [toReset, reSettingIsReset]);
+
+  useEffect(() => {
+    setEarror("");
+  }, [isEarrorResetOnChange]);
 
   useEffect(() => {
     if (inputEarror > 0) {

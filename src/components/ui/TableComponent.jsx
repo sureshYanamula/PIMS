@@ -190,6 +190,7 @@ export default function TableComponent({
   addingDataToTable,
   tableObj,
   openingMOdal,
+  program,
 }) {
   const classes = useStyles();
   const [rows, setRows] = React.useState(initialRows);
@@ -205,11 +206,7 @@ export default function TableComponent({
       fat: tableObj[2],
       carbs: tableObj[3],
     };
-    if (
-      tableObj[0].length >= 1 &&
-      tableObj[1].length >= 1 &&
-      tableObj[2].length >= 1
-    ) {
+    if (tableObj[0].length >= 1 && tableObj[1].length >= 1) {
       console.log("1");
       let duplicateObj = rows.find((item) => {
         return item.name == tableObj[0];
@@ -268,12 +265,14 @@ export default function TableComponent({
             >
               Description
             </TableCell>
-            <TableCell
-              align="left"
-              className={`${classes.rowColor} ${classes.rowBgColor}`}
-            >
-              Wherehouse
-            </TableCell>
+            {program ? (
+              <TableCell
+                align="left"
+                className={`${classes.rowColor} ${classes.rowBgColor}`}
+              >
+                Wherehouse
+              </TableCell>
+            ) : null}
             <TableCell
               align="left"
               className={`${classes.rowColor} ${classes.rowBgColor}`}
@@ -295,9 +294,11 @@ export default function TableComponent({
               <TableCell align="left" className={classes.rowColor}>
                 {row.calories}
               </TableCell>
-              <TableCell align="left" className={classes.rowColor}>
-                {row.fat}
-              </TableCell>
+              {program ? (
+                <TableCell align="left" className={classes.rowColor}>
+                  {row.fat}
+                </TableCell>
+              ) : null}
               <TableCell align="left" className={classes.rowColor}>
                 <Button
                   color="primary"

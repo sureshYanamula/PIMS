@@ -1,5 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useHistory } from "react-router";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,6 +16,12 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import ProfileMenu from "./ProfileMenu";
 import MasterSetup from "./MasterSetup";
+import MasterVendorSetup from "./MasterVendorSetup";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import clsx from "clsx";
 
 const drawerWidth = 240;
 
@@ -39,60 +47,221 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
   paper: {
     background: "#22599c",
+    width: "16%",
+  },
+  accordionExpanded: {
+    margin: "0 !important",
+    backgroundColor: "#22599c",
+    border: "none",
+    overflowX: "hidden",
+    overflowY: "hidden",
+    boxShadow: "none !important",
+    // boxShadow:
+    //   "0px 2px 1px -1px rgb(0 0 0 / 10%), 0px 1px 1px 0px rgb(0 0 0 / 7%), 0px 1px 3px 0px rgb(0 0 0 / 6%)",
+  },
+  heading: {
+    color: "white",
+    fontWeight: 300,
+  },
+  iconColor: {
+    color: "white",
+  },
+  listItemPadding: {
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  listItemText: {
+    color: "white",
   },
 }));
 
 const Header = () => {
   const classes = useStyles();
+  let history = useHistory();
+
+  const handleInventory = (data) => {
+    console.log(data);
+    if (data === "Program") {
+      window.open("http://localhost:3000/program", "_self");
+    }
+    if (data === "Vendor") {
+      window.open("http://localhost:3000/vendor", "_self");
+    }
+  };
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" elevation={0} className={classes.appBar}>
-        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h5" noWrap>
-            PIMS
-          </Typography>
-          <Typography variant="h5" noWrap>
-            <ProfileMenu />
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer classes={{ paper: classes.paper }} variant="permanent">
-        <Toolbar />
-        <div className={classes.drawerContainer}>
-          <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </div>
-      </Drawer>
-      <main className={classes.content}>
-        <Toolbar />
+      <BrowserRouter>
+        <CssBaseline />
+        <AppBar position="fixed" elevation={0} className={classes.appBar}>
+          <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h5" noWrap>
+              PIMS
+            </Typography>
+            <Typography variant="h5" noWrap>
+              <ProfileMenu />
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer classes={{ paper: classes.paper }} variant="permanent">
+          <Toolbar />
+          <div className={classes.drawerContainer}>
+            <List>
+              <Accordion
+                elevation={0}
+                square={true}
+                className={classes.accordionExpanded}
+                // classes={{
+                //   expanded: classes.accordionExpanded,
+                //   root: classes.accordionExpanded,
+                // }}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    <ExpandMoreIcon classes={{ root: classes.iconColor }} />
+                  }
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>
+                    Master Setup
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {[
+                      "Item",
+                      "Location",
+                      "Pack",
+                      "Program",
+                      "Reason Codes",
+                      "Tire",
+                      "Unit",
+                      "Vendor",
+                      "Warehouse",
+                    ].map((text, index) => (
+                      <ListItem
+                        button
+                        key={text}
+                        onClick={() => handleInventory(text)}
+                        classes={{ root: classes.listItemPadding }}
+                      >
+                        <ListItemText
+                          primary={text}
+                          className={classes.listItemText}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                elevation={0}
+                square={true}
+                className={classes.accordionExpanded}
 
-        <MasterSetup />
-      </main>
+                // classes={{
+                //   expanded: classes.accordionExpanded,
+                //   root: classes.accordionExpanded,
+                // }}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    <ExpandMoreIcon classes={{ root: classes.iconColor }} />
+                  }
+                  aria-controls="panel2a-content"
+                  id="panel2a-header"
+                >
+                  <Typography className={classes.heading}>
+                    Inventory Management
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {[
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                    ].map((text, index) => (
+                      <ListItem
+                        button
+                        key={text}
+                        classes={{ root: classes.listItemPadding }}
+                      >
+                        <ListItemText
+                          primary={text}
+                          className={classes.listItemText}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                elevation={0}
+                square={true}
+                className={classes.accordionExpanded}
+
+                // classes={{
+                //   expanded: classes.accordionExpanded,
+                //   root: classes.accordionExpanded,
+                // }}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    <ExpandMoreIcon classes={{ root: classes.iconColor }} />
+                  }
+                  aria-controls="panel3a-content"
+                  id="panel3a-header"
+                >
+                  <Typography className={classes.heading}>Orders</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {[
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                      "Tree Item",
+                    ].map((text, index) => (
+                      <ListItem
+                        button
+                        key={text}
+                        classes={{ root: classes.listItemPadding }}
+                      >
+                        <ListItemText
+                          primary={text}
+                          className={classes.listItemText}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            </List>
+          </div>
+        </Drawer>
+        <main className={classes.content}>
+          <Toolbar />
+          <Switch>
+            <Route exact path="/program">
+              <MasterSetup />
+            </Route>
+            <Route exact path="/vendor">
+              <MasterVendorSetup />
+            </Route>
+
+            {/* <Route path="/inventoryManagement" element={<MasterSetup />} /> */}
+          </Switch>
+        </main>
+      </BrowserRouter>
     </div>
   );
 };
