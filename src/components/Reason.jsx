@@ -188,6 +188,12 @@ const Reason = () => {
           <TableComponent
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
+            tableHeader={[
+              "Reason Id",
+              "Reason Description",
+              "Warehouse",
+              "Action",
+            ]}
             deleteColumn={true}
             program={false}
             tableObj={[

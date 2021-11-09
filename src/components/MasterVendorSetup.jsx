@@ -188,6 +188,7 @@ const MasterSetup = () => {
           <TableComponent
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
+            tableHeader={["Vendor Id", "Vendor Name", "Warehouse", "Action"]}
             deleteColumn={true}
             program={false}
             tableObj={[

@@ -189,6 +189,12 @@ const Warehouse = () => {
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
             deleteColumn={false}
+            tableHeader={[
+              "Warehouse Id",
+              "Warehouse Name",
+              "Warehouse",
+              "Action",
+            ]}
             program={false}
             tableObj={[
               programValue,

@@ -193,6 +193,7 @@ const MasterSetup = () => {
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
             deleteColumn={true}
+            tableHeader={["Program Id", "Description", "Warehouse", "Action"]}
             program={true}
             tableObj={[
               programValue,

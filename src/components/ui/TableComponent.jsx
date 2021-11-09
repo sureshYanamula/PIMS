@@ -192,6 +192,7 @@ export default function TableComponent({
   openingMOdal,
   program,
   deleteColumn,
+  tableHeader,
 }) {
   const classes = useStyles();
   const [rows, setRows] = React.useState(initialRows);
@@ -263,20 +264,20 @@ export default function TableComponent({
               align="left"
               className={`${classes.rowColor} ${classes.rowBgColor}`}
             >
-              Program Id
+              {tableHeader[0]}
             </TableCell>
             <TableCell
               align="left"
               className={`${classes.rowColor} ${classes.rowBgColor}`}
             >
-              Description
+              {tableHeader[1]}
             </TableCell>
             {program ? (
               <TableCell
                 align="left"
                 className={`${classes.rowColor} ${classes.rowBgColor}`}
               >
-                Wherehouse
+                {tableHeader[2]}
               </TableCell>
             ) : null}
             {deleteColumn ? (
