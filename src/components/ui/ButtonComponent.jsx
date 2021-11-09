@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
   borderRadius: {
     borderRadius: 0,
+    textTransform: "none",
     // minWidth: 178,
     height: 35,
   },

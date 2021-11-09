@@ -188,6 +188,7 @@ const MasterSetup = () => {
           <TableComponent
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
+            deleteColumn={true}
             program={false}
             tableObj={[
               programValue,

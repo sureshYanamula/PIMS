@@ -22,6 +22,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
+import Reason from "./Reason";
+import Warehouse from "./Warehouse";
 
 const drawerWidth = 240;
 
@@ -85,12 +87,27 @@ const Header = () => {
 
   const handleInventory = (data) => {
     console.log(data);
-    if (data === "Program") {
-      window.open("http://localhost:3000/program", "_self");
+    switch (data) {
+      case "Program":
+        window.open("http://localhost:3000/program", "_self");
+        break;
+      case "Vendor":
+        window.open("http://localhost:3000/vendor", "_self");
+        break;
+      case "Warehouse":
+        window.open("http://localhost:3000/warehouse", "_self");
+        break;
+      case "Reason Codes":
+        window.open("http://localhost:3000/reasonCodes", "_self");
+        break;
     }
-    if (data === "Vendor") {
-      window.open("http://localhost:3000/vendor", "_self");
-    }
+    // if (data === "Program") {
+    //   window.open("http://localhost:3000/program", "_self");
+
+    // }
+    // if (data === "Vendor") {
+    //   window.open("http://localhost:3000/vendor", "_self");
+    // }
   };
 
   return (
@@ -257,8 +274,12 @@ const Header = () => {
             <Route exact path="/vendor">
               <MasterVendorSetup />
             </Route>
-
-            {/* <Route path="/inventoryManagement" element={<MasterSetup />} /> */}
+            <Route exact path="/warehouse">
+              <Warehouse />
+            </Route>
+            <Route exact path="/reasonCodes">
+              <Reason />
+            </Route>
           </Switch>
         </main>
       </BrowserRouter>

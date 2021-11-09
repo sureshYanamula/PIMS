@@ -111,7 +111,7 @@ const ModalComponent = ({
                     <ButtonComponent
                       id="transition-modal-title"
                       buttonType="contained"
-                      buttonLabel="Okay"
+                      buttonLabel="COnfirm"
                       minWidth={false}
                       handleOnClick={handleDeleteTableDataRow}
                     />

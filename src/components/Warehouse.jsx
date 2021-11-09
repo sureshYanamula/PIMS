@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MasterSetup = () => {
+const Warehouse = () => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -69,11 +69,7 @@ const MasterSetup = () => {
       warehouseValue.length,
       "programValue, descriptionValue, warehouseValue"
     );
-    if (
-      (programValue.length < 1) |
-      (descriptionValue.length < 1) |
-      (warehouseValue.length < 1)
-    ) {
+    if ((programValue.length < 1) | (descriptionValue.length < 1)) {
       setIsInputEarror(isInputError + 1);
     }
     setAddingDataToTable(!addingDataToTable);
@@ -136,13 +132,13 @@ const MasterSetup = () => {
           item
           className={`${classes.innerMargin} ${classes.itemOneMargin}`}
         >
-          <Typography variant="h5">Inventory Management</Typography>
-          <Typography variant="subtitle1">Program Entry</Typography>
+          <Typography variant="h5">Master Setup</Typography>
+          <Typography variant="subtitle1">Warehouse Entry</Typography>
         </Grid>
         <Grid item container sm={12} className={classes.itemOneMargin}>
           <Input
-            inputLabel="Program Id"
-            inputPlaceHolder="Enter your program ID"
+            inputLabel="Warehouse Id"
+            inputPlaceHolder="Enter your Warehouse ID"
             inputValue={handleProgramValue}
             toReset={isReset}
             earrorResetOnChannge={earrorResetOnChannge}
@@ -152,8 +148,8 @@ const MasterSetup = () => {
             reSettingIsReset={() => setIsReset(false)}
           />
           <Input
-            inputLabel="Description"
-            inputPlaceHolder="Enter your Description"
+            inputLabel="Warehouse Name"
+            inputPlaceHolder="Enter your Warehouse Name"
             inputValue={handleDescriptionValue}
             toReset={isReset}
             earrorResetOnChannge={earrorResetOnChannge}
@@ -162,13 +158,13 @@ const MasterSetup = () => {
             inputEarror={isInputError}
             reSettingIsReset={() => setIsReset(false)}
           />
-          <SelectComponent
+          {/* <SelectComponent
             selectLabel="Select your warehouse"
             selectValue={handleWarehouseValue}
             inputEarror={isInputError}
             toReset={isReset}
             reSettingIsReset={() => setIsReset(false)}
-          />
+          /> */}
         </Grid>
         <Grid item className={classes.itemTwoMargin}>
           <Grid item container justifyContent="center">
@@ -192,8 +188,8 @@ const MasterSetup = () => {
           <TableComponent
             addingDataToTable={addingDataToTable}
             openingMOdal={openingMOdal}
-            deleteColumn={true}
-            program={true}
+            deleteColumn={false}
+            program={false}
             tableObj={[
               programValue,
               descriptionValue,
@@ -205,14 +201,14 @@ const MasterSetup = () => {
       </Paper>
       <ModalComponent
         modalDialog={modalDialogSuccess}
-        modalText="Program added Successfully"
+        modalText="Warehouse added Successfully"
       />
       <ModalComponent
         modalDialog={modalDialogExists}
-        modalText="Program Id Exists"
+        modalText="Warehouse Already Exists"
       />
     </Grid>
   );
 };
 
-export default MasterSetup;
+export default Warehouse;

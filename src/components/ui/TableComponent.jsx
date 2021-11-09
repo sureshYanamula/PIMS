@@ -191,6 +191,7 @@ export default function TableComponent({
   tableObj,
   openingMOdal,
   program,
+  deleteColumn,
 }) {
   const classes = useStyles();
   const [rows, setRows] = React.useState(initialRows);
@@ -250,7 +251,12 @@ export default function TableComponent({
 
   return (
     <TableContainer style={{ height: "40vh" }}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table
+        className={classes.table}
+        size="small"
+        aria-label="a dense table"
+        stickyHeader
+      >
         <TableHead>
           <TableRow>
             <TableCell
@@ -273,12 +279,14 @@ export default function TableComponent({
                 Wherehouse
               </TableCell>
             ) : null}
-            <TableCell
-              align="left"
-              className={`${classes.rowColor} ${classes.rowBgColor}`}
-            >
-              Action
-            </TableCell>
+            {deleteColumn ? (
+              <TableCell
+                align="left"
+                className={`${classes.rowColor} ${classes.rowBgColor}`}
+              >
+                Action
+              </TableCell>
+            ) : null}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -299,15 +307,18 @@ export default function TableComponent({
                   {row.fat}
                 </TableCell>
               ) : null}
-              <TableCell align="left" className={classes.rowColor}>
-                <Button
-                  color="primary"
-                  onClick={() => handleDelete(row, index)}
-                  className={classes.button}
-                >
-                  {row.carbs}
-                </Button>
-              </TableCell>
+
+              {deleteColumn ? (
+                <TableCell align="left" className={classes.rowColor}>
+                  <Button
+                    color="primary"
+                    onClick={() => handleDelete(row, index)}
+                    className={classes.button}
+                  >
+                    {row.carbs}
+                  </Button>
+                </TableCell>
+              ) : null}
             </TableRow>
           ))}
         </TableBody>
@@ -318,7 +329,7 @@ export default function TableComponent({
       />
       <ModalComponent
         modalDialog={modalAllowed}
-        modalText="Are you sure to Delete"
+        modalText="Are you sure want to Delete this"
         deleteButton={true}
         handleDeleteTableData={handleDeleteRow}
       />
