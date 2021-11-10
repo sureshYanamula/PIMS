@@ -196,6 +196,7 @@ export default function TableComponent({
 }) {
   const classes = useStyles();
   const [rows, setRows] = React.useState(initialRows);
+  console.log(rows, "rows");
   const [open, setOpen] = React.useState(false);
   const [modalNotAllowed, setModalNotAllowed] = React.useState(0);
   const [modalAllowed, setModalAllowed] = React.useState(0);

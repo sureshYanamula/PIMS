@@ -100,6 +100,13 @@ const Input = ({
     earrorResetOnChannge();
   };
 
+  const handleKeyPress = (e) => {
+    console.log("handleKeyPress", e);
+    if (e.charCode >= 48 && e.charCode <= 57) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <form className={classes.root} noValidate>
       <FormControl className={classes.margin}>
@@ -110,6 +117,7 @@ const Input = ({
           placeholder={inputPlaceHolder}
           id="bootstrap-input"
           value={value}
+          onKeyPress={handleKeyPress}
           onChange={handleChange}
           inputProps={{ maxLength: inputLength }}
         />
